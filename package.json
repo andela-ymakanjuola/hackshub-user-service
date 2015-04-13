@@ -1,0 +1,20 @@
+{
+  "name": "hackshub-user-service",
+  "version": "1.0.0",
+  "description": "user service with authentication",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/andela-ymakanjuola/hackshub-user-service.git"
+  },
+  "author": "yinka",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/andela-ymakanjuola/hackshub-user-service/issues"
+  },
+  "homepage": "https://github.com/andela-ymakanjuola/hackshub-user-service"
+}
