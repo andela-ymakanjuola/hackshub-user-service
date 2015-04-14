@@ -19,6 +19,7 @@
   "homepage": "https://github.com/andela-ymakanjuola/hackshub-user-service",
   "dependencies": {
     "bookshelf": "^0.7.9",
-    "knex": "^0.7.6"
+    "knex": "^0.7.6",
+    "pg": "^4.3.0"
   }
 }
