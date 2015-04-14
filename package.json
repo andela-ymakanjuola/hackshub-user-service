@@ -4,7 +4,7 @@
   "description": "user service with authentication",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "export NODE_ENV=test && jasmine-node ./spec/**/*.js --autotest --color",
     "start": "node server.js"
   },
   "repository": {
