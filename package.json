@@ -16,5 +16,9 @@
   "bugs": {
     "url": "https://github.com/andela-ymakanjuola/hackshub-user-service/issues"
   },
-  "homepage": "https://github.com/andela-ymakanjuola/hackshub-user-service"
+  "homepage": "https://github.com/andela-ymakanjuola/hackshub-user-service",
+  "dependencies": {
+    "bookshelf": "^0.7.9",
+    "knex": "^0.7.6"
+  }
 }
