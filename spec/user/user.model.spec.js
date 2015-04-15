@@ -1,6 +1,5 @@
 var app = require('../../server'),
-    bookshelf = require('bookshelf'),
-    pg = require('pg'),
+   
     User = require('../.././app/user/models/user.model');
 
 var user;
