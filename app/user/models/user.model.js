@@ -1,4 +1,5 @@
-var knex = require('knex')(config.db[process.env.NODE_ENV].pg),
+var config = require('../../../config/config'),
+    knex = require('knex')(config.db[process.env.NODE_ENV].pg),
     bookshelf = require('bookshelf')(knex);
 
 bookshelf.knex.schema.dropTableIfExists('users').then(function () {
