@@ -1,7 +1,6 @@
 module.exports = {
   db: {
     development: {
-
       pg: {
         client: 'pg',
         connection: {
@@ -20,7 +19,7 @@ module.exports = {
           host     : '127.0.0.1',
           user     : 'Yinka',
           password : '',
-          database : 'users-db'
+          database : 'users-test-db'
         }
       }
     },
