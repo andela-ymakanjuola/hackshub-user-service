@@ -3,7 +3,7 @@ var app = require('../../server.js'),
 
 describe('Tests for User routes', function () {
 
-  it('GET Method: Get all users' function (done) {
+  it('GET Method: Get all users', function (done) {
     request
       .get('/users')
       .expect(200)
@@ -25,7 +25,7 @@ describe('Tests for User routes', function () {
         "email": "yinka@andela.co",
         "username":"andela-y",
         "password": "andela123"
-      }))
+      })
       .expect(200)
       .expect('Content-Type',/json/)
       .end(function (error, response) {
