@@ -1,5 +1,5 @@
 var config = require('./config/config'),
-    knex = require('knex')(config.db[process.env.NOVE_ENV].pgconnection);
+    knex = require('knex')(config.db[process.env.NODE_ENV].pg);
     bookshelf = require('bookshelf')(knex);
 
 
