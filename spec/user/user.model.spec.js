@@ -1,7 +1,7 @@
 var app = require('../../server'),
     bookshelf = require('bookshelf'),
     pg = require('pg'),
-    User = require('../../.app/user/user.model');
+    User = require('../.././app/user/models/user.model');
 
 var user;
 
@@ -16,11 +16,7 @@ describe('Database Tests for user service model', function(){
       username:"andela-y",
       password: "andela123"
     });
-
-  });
-
-  it('Test for Database and table creation', function (done) {
-
+    done();
   });
 
   describe('Test for required fields: ', function () {
@@ -38,7 +34,7 @@ describe('Database Tests for user service model', function(){
       user.save(function (error){
         expect(error).toBeDefined();
       });
-
+      done();
     });
 
     it('Email:', function (done) {
@@ -65,10 +61,10 @@ describe('Database Tests for user service model', function(){
       done();
     });
 
-  })
+  });
 
   it('Test for Email format', function (done) {
-    user.email = "yinks"
+    user.email = "yinks";
     user.save(function (error) {
       expect(error).toBeDefined();
     });
@@ -97,6 +93,7 @@ describe('Database Tests for user service model', function(){
         return done(error);
       }
       done();
+    });
   });
 
 });
