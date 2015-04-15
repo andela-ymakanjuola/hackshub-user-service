@@ -29,8 +29,8 @@ describe('Database Tests for user service model', function(){
       done();
     });
 
-    it('Surname:', function (done) {
-      user.sur_name='';
+    it('Last Name:', function (done) {
+      user.last_name='';
       user.save(function (error){
         expect(error).toBeDefined();
       });
@@ -55,10 +55,9 @@ describe('Database Tests for user service model', function(){
 
     it('Password:', function (done) {
       user.password = '';
-      user.save()
-          .then(function (error){
-            expect(error).toBeDefined();
-          });
+      user.save(function (error) {
+        expect(error).toBeDefined();
+      });
       done();
     });
 
