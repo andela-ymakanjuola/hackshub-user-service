@@ -11,7 +11,7 @@ describe('Database Tests for user service model', function(){
   beforeEach(function (done) {
     user = new User({
       first_name: "Yinka",
-      sur_name: "Makanjuola",
+      last_name: "Makanjuola",
       email: "yinka@andela.co",
       username:"andela-y",
       password: "andela123"
@@ -55,9 +55,10 @@ describe('Database Tests for user service model', function(){
 
     it('Password:', function (done) {
       user.password = '';
-      user.save(function (error){
-        expect(error).toBeDefined();
-      });
+      user.save()
+          .then(function (error){
+            expect(error).toBeDefined();
+          });
       done();
     });
 
@@ -74,8 +75,8 @@ describe('Database Tests for user service model', function(){
   it('Unique username', function (done) {
     user.save();
     user = new User({
-      first_name: "Charming",
-      sur_name: "Mel",
+      first_ame: "Charming",
+      last_name: "Mel",
       email: "mel@andela.co",
       username:"andela-y",
       password: "andela134"
@@ -88,7 +89,7 @@ describe('Database Tests for user service model', function(){
   });
 
   afterEach(function (done) {
-    User.remove(function (error) {
+    User.destroy(function (error) {
       if (error){
         return done(error);
       }
