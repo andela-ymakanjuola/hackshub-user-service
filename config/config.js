@@ -4,10 +4,10 @@ module.exports = {
       pg: {
         client: 'pg',
         connection: {
-          host     : '127.0.0.1',
+          host     : 'localhost',
           user     : 'Yinka',
           password : '',
-          database : 'users-db'
+          database : 'users-test-db'
         }
       }
     },
@@ -16,10 +16,11 @@ module.exports = {
       pg: {
         client: 'pg',
         connection: {
-          host     : '127.0.0.1',
+          host     : 'localhost',
           user     : 'Yinka',
           password : '',
-          database : 'users-test-db'
+          database : 'users-test-db',
+          debug: true
         }
       }
     },
