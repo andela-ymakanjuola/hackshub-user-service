@@ -4,13 +4,15 @@ var express = require('express'),
     parseUrlencoded = bodyParser.urlencoded({extended: true}),
     User = require('../controllers/user.controller');
 
-router.route('/')
+router.route('/signup')
 
-  .post(parseUrlencoded, User.create)
+  .post(parseUrlencoded, User.create);
+
+router.route('/')
 
   .get(User.readAll);
 
-router.route('/:user_id')
+router.route('/:username')
 
   .get(User.read)
 
