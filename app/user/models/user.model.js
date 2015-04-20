@@ -24,7 +24,8 @@ bookshelf.knex.schema.hasTable('users').then(function (exists) {
 });
 
 var Users = bookshelf.Model.extend({
-  tableName: 'users'
+  tableName: 'users',
+  hasTimestamps: true
 });
 
 module.exports = Users;
