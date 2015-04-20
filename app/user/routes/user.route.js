@@ -12,7 +12,7 @@ router.route('/users')
 
   .get(User.readAll);
 
-router.route('/user/login')
+router.route('/login')
   .post(User.login)
 
 router.route('/user/:username')
