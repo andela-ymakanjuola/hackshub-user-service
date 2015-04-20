@@ -8,11 +8,11 @@ router.route('/signup')
 
   .post(parseUrlencoded, User.create);
 
-router.route('/')
+router.route('/users')
 
   .get(User.readAll);
 
-router.route('/:username')
+router.route('/user/:username')
 
   .get(User.read)
 
