@@ -8,7 +8,7 @@ module.exports = {
 
     if(!(request.body.username && request.body.password && request.body.email)){
       response
-      status(400)
+      .status(400)
       .json('Username and Password required');
     }
 
@@ -18,12 +18,13 @@ module.exports = {
       email: request.body.email
     })
       .fetch()
-      .then(function (User) {
-        if(User){
+      .then(function (user) {
+        if(user){
           response
-          .status(204)
-          .json('User exists');
-        } else {
+            
+            .json({message:'User exists!'});
+        } 
+        else {
           User.forge({
             first_name: request.body.first_name,
             last_name: request.body.last_name,
@@ -32,15 +33,16 @@ module.exports = {
             password: request.body.password
           })
           .save()
-          .then(function (error) {
-            if(error){
-              console.log(error);
-              response.save(error);
-            }
-            response.json(User);
+          .then(function (user) {
+            response.json(user.toJSON());
+          })
+          .otherwise(function (error) {
+            response.json({message: error.message});
           });
         }
-        
+      })
+      .catch(function (error) {
+       response.json({message: error.message})
       });
 
   },
@@ -50,13 +52,13 @@ module.exports = {
       username: request.params.username
     })
       .fetch()
-      .then(function (User) {
-        if(!User) {
+      .then(function (user) {
+        if(!user) {
           response
             .status(422)
             .json({message:'User not found'});
         }
-        response.json(User);
+        response.json(user.toJSON());
       })
       .catch(function (error) {
        response.json({message: error.message})
@@ -66,9 +68,9 @@ module.exports = {
   readAll: function (request, response) {
     User
       .fetchAll({required: true})
-      .then(function (User) {
-        console.log(User);
-        response.json(User);
+      .then(function (user) {
+        console.log(user);
+        response.json(user);
       })
       .catch(function (error) {
       response
@@ -78,16 +80,26 @@ module.exports = {
   },
 
   update: function (request, response) {
-    new User({username: request.params.username})
-    .save({
-      username: request.body.username,
-      password: request.body.password,
-      first_name: request.body.firstname,
-      last_name: request.body.lasname
-      },
-      {patch: true})
+    User.forge({username: request.params.username})
+    .fetch({required: true})
     .then(function (user) {
-      response.json(user);
+      if(!user){
+        response.json({message:'Cannot update non existing user'})
+      }
+      else {   
+        user
+          .save(
+            request.body,
+            {patch: true})
+          .then(function (user) {
+            response.json(user.toJSON());
+          })
+          .otherwise(function (error) {
+            response
+              .status(400)
+              .json({message: error.message});
+          });
+      }
     })
     .catch(function (error) {
       response
