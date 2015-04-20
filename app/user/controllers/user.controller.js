@@ -1,11 +1,15 @@
-User = require('.././models/user.model');
+'use strict';
+
+var User = require('.././models/user.model');
 
 module.exports = {
 
   create: function (request, response) {
 
     if(!(request.body.username && request.body.password && request.body.email)){
-      response.json('Username and Password required');
+      response
+      status(400)
+      .json('Username and Password required');
     }
 
     new User({
@@ -15,40 +19,101 @@ module.exports = {
     })
       .fetch()
       .then(function (User) {
-        response.json('User exists');
+        if(User){
+          response
+          .status(204)
+          .json('User exists');
+        } else {
+          User.forge({
+            first_name: request.body.first_name,
+            last_name: request.body.last_name,
+            email: request.body.email,
+            username: request.body.username,
+            password: request.body.password
+          })
+          .save()
+          .then(function (error) {
+            if(error){
+              console.log(error);
+              response.save(error);
+            }
+            response.json(User);
+          });
+        }
+        
       });
-
-    User.forge({
-      first_name: request.body.first_name,
-      last_name: request.body.last_name,
-      email: request.body.email,
-      username: request.body.username,
-      password: request.body.password
-    })
-    .save(function (error) {
-      if(error){
-        console.log(error);
-        response.save(error)
-      }
-      response.json(User);
-    });
 
   },
 
   read: function (request, response) {
-    
-
+    new User({
+      username: request.params.username
+    })
+      .fetch()
+      .then(function (User) {
+        if(!User) {
+          response
+            .status(422)
+            .json({message:'User not found'});
+        }
+        response.json(User);
+      })
+      .catch(function (error) {
+       response.json({message: error.message})
+      });
   },
 
   readAll: function (request, response) {
-
+    User
+      .fetchAll({required: true})
+      .then(function (User) {
+        console.log(User);
+        response.json(User);
+      })
+      .catch(function (error) {
+      response
+      .status(500)
+      .json({message: error.message});
+    })
   },
 
   update: function (request, response) {
-
+    new User({username: request.params.username})
+    .save({
+      username: request.body.username,
+      password: request.body.password,
+      first_name: request.body.firstname,
+      last_name: request.body.lasname
+      },
+      {patch: true})
+    .then(function (user) {
+      response.json(user);
+    })
+    .catch(function (error) {
+      response
+      .status(500)
+      .json({message: error.message});
+    })
   },
 
   delete: function (request, response) {
-
+    User.forge({username: request.params.username})
+    .fetch({require: true})
+    .then(function (user) {
+      user.destroy()
+      .then(function () {
+        response.json({message: 'User successfully deleted'});
+      })
+      .otherwise(function (error) {
+        response
+          .status(500)
+          .json({message: error.message});
+      });
+    })
+    .catch(function (error) {
+      response
+      .status(500)
+      .json({message: error.message});
+    })
   }
 }
