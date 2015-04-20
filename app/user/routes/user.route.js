@@ -12,11 +12,14 @@ router.route('/users')
 
   .get(User.readAll);
 
+router.route('/user/login')
+  .post(User.login)
+
 router.route('/user/:username')
 
   .get(User.read)
 
-  .put(User.update)
+  .put(parseUrlencoded, User.update)
 
   .delete(User.delete);
 
