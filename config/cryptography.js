@@ -1,15 +1,20 @@
-var crypto = require('crypto');
+var crypto = require('crypto'),
+    uuid = require('node-uuid');
 
 module.exports = {
-  hash: function () {
-
+  hashPassword: function (password, salt) {
+    return crypto.createHmac('sha256', salt).update(password).digest('hex');
   },
 
-  password: function () {
-
+  verifyPassword: function (user, provided) {
+    console.log(user.salt);
+    console.log(user.password);
+    return user.password === this.hashPassword(provided, user.salt);
   },
 
-  verify: function () {
-    
+  generateSalt: function () {
+    var salt = uuid.v1();
+    console.log(salt);
+    return salt;
   }
 };
