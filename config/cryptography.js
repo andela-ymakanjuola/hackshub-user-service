@@ -7,8 +7,7 @@ module.exports = {
   },
 
   verifyPassword: function (user, provided) {
-    console.log(user.salt);
-    console.log(user.password);
+    
     return user.password === this.hashPassword(provided, user.salt);
   },
 
