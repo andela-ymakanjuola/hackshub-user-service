@@ -34,7 +34,6 @@ module.exports = {
           password : 'HElkja9I0cF5DlpsfQ-1Oueh4i',
           database : 'douhefahet104'
         }
-        }
       }
     }
   },
