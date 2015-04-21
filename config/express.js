@@ -10,7 +10,7 @@ module.exports = function () {
   app.use(bodyParser.urlencoded({extended: true}));
   app.use(bodyParser.json());
 
-  app.use(expressJwt({secret: config.secret}).unless({path:['/login']}))
+  app.use(expressJwt({secret: config.secret}).unless({path:['/login', '/signup']}))
 
   app.use('/',router);
 
