@@ -142,7 +142,6 @@ module.exports = {
 
             response.json({
               message: "Authentication Successful!",
-              data: user, 
               authToken: token});
           }
           else {
