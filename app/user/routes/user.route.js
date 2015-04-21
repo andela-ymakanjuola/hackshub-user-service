@@ -15,7 +15,7 @@ router.route('/users')
 router.route('/login')
   .post(User.login)
 
-router.route('/user/:username')
+router.route('/users/:username')
 
   .get(User.read)
 
