@@ -11,47 +11,47 @@ module.exports = {
     
     //verify if required fields are supplied before creating user
     
-    if(!(request.body.username && request.body.password && request.body.email)){
+    if(!(request.body.username && request.body.password)){
       response
-      .status(400)
-      .json('Username and Password required');
+        .status(400)
+        .json('Username and Password required');
     }
+    else {
 
-    new User({
-      username: request.body.username,
-      password: request.body.password,
-      email: request.body.email
-    })
-      .fetch()
-      .then(function (user) {
-        if(user){
-          response
-            .json({message:'User exists!'});
-        } 
-        else {
-          var new_salt = crypt.generateSalt(); // create new uuid for user
-
-          User.forge({
-            first_name: request.body.first_name,
-            last_name: request.body.last_name,
-            email: request.body.email,
-            username: request.body.username,
-            salt: new_salt,
-            password: crypt.hashPassword(request.body.password, new_salt) //hash provided password before storing in datatbase
-          })
-          .save()
-          .then(function (user) {
-            response.json(user.toJSON());
-          })
-          .otherwise(function (error) {
-            response.json({message: error.message});
-          });
-        }
+      new User({
+        username: request.body.username
       })
-      .catch(function (error) {
-       response.json({message: error.message})
-      });
+        .fetch()
+        .then(function (user) {
+          if(user){
+            response
+              .json({message:'User already exists!'});
+          } 
+          else {
+            var new_salt = crypt.generateSalt(); // create new uuid for user
 
+            User.forge({
+              first_name: request.body.first_name,
+              last_name: request.body.last_name,
+              email: request.body.email,
+              username: request.body.username,
+              salt: new_salt,
+              password: crypt.hashPassword(request.body.password, new_salt) //hash provided password before storing in datatbase
+            })
+            .save()
+            .then(function (user) {
+              response.json(user.toJSON());
+            })
+            .otherwise(function (error) {
+              response.json({message: error.message});
+            });
+          }
+        })
+        .catch(function (error) {
+         //response.json({message: error.message});
+        });
+
+    }
   },
 
   read: function (request, response) {
