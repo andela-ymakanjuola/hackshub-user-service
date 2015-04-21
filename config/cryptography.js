@@ -7,13 +7,10 @@ module.exports = {
   },
 
   verifyPassword: function (user, provided) {
-    
     return user.password === this.hashPassword(provided, user.salt);
   },
 
   generateSalt: function () {
-    var salt = uuid.v1();
-    console.log(salt);
-    return salt;
+    return uuid.v1();
   }
 };
