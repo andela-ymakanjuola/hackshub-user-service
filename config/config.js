@@ -7,7 +7,7 @@ module.exports = {
           host     : 'localhost',
           user     : 'Yinka',
           password : '',
-          database : 'users-test-db'
+          database : 'users-db'
         }
       }
     },
