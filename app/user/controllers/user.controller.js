@@ -1,11 +1,16 @@
 'use strict';
 
-var User = require('.././models/user.model');
+var User = require('.././models/user.model'),
+    jwt = require('jsonwebtoken'),
+    config = require('../../../config/config'),
+    crypt = require('../../../config/cryptography');
 
 module.exports = {
 
   create: function (request, response) {
-
+    
+    //verify if required fields are supplied before creating user
+    
     if(!(request.body.username && request.body.password && request.body.email)){
       response
       .status(400)
@@ -21,16 +26,18 @@ module.exports = {
       .then(function (user) {
         if(user){
           response
-            
             .json({message:'User exists!'});
         } 
         else {
+          var new_salt = crypt.generateSalt(); // create new uuid for user
+
           User.forge({
             first_name: request.body.first_name,
             last_name: request.body.last_name,
             email: request.body.email,
             username: request.body.username,
-            password: request.body.password
+            salt: new_salt,
+            password: crypt.hashPassword(request.body.password, new_salt) //hash provided password before storing in datatbase
           })
           .save()
           .then(function (user) {
@@ -58,10 +65,14 @@ module.exports = {
             .status(422)
             .json({message:'User not found'});
         }
-        response.json(user.toJSON());
+        else {
+          response
+            .json(user.toJSON());
+        }
       })
       .catch(function (error) {
-       response.json({message: error.message})
+        response
+          .json({message: error.message})
       });
   },
 
@@ -73,9 +84,9 @@ module.exports = {
         response.json(user);
       })
       .catch(function (error) {
-      response
-      .status(500)
-      .json({message: error.message});
+        response
+          .status(500)
+          .json({message: error.message});
     })
   },
 
@@ -92,7 +103,8 @@ module.exports = {
             request.body,
             {patch: true})
           .then(function (user) {
-            response.json(user.toJSON());
+            response
+              .json(user.toJSON());
           })
           .otherwise(function (error) {
             response
@@ -103,24 +115,62 @@ module.exports = {
     })
     .catch(function (error) {
       response
-      .status(500)
-      .json({message: error.message});
+        .status(500)
+        .json({moduleessage: error.message});
     })
   },
 
-  delete: function (request, response) {
-    User.forge({username: request.params.username})
-    .fetch({require: true})
-    .then(function (user) {
-      user.destroy()
-      .then(function () {
-        response.json({message: 'User successfully deleted'});
+  login: function (request, response) {
+
+    User
+      .forge({
+        username: request.body.username,
       })
-      .otherwise(function (error) {
-        response
-          .status(500)
-          .json({message: error.message});
+      .fetch({require: true})
+      .then (function (user) {
+        
+        if(user) {
+          //verify password provided on login before generating token for user
+          if (crypt.verifyPassword(user.toJSON(), request.body.password)){
+            var token = jwt.sign({
+              username: request.body.username,
+              iss: 'hackshub.com'
+            }, 
+            config.secret);
+
+            response.json({
+              message: "Authentication Successful!",
+              data: user, 
+              authToken: token});
+          }
+          else {
+            response.json({error: "Password Unverified"});
+          }
+        }
+        else {
+          response.json({message:'user not found'});
+        }
+      })
+      .catch(function (error) {
+        response.json({message: error.message});
       });
+
+  },
+
+  delete: function (request, response) {
+    User
+      .forge({username: request.params.username})
+      .fetch({require: true})
+      .then(function (user) {
+        user.destroy()
+        .then(function () {
+          response.json({message: 'User successfully deleted'});
+        })
+        .otherwise(function (error) {
+          response
+            .status(500)
+            .json({message: error.message});
+        });
     })
     .catch(function (error) {
       response
