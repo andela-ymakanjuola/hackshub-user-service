@@ -48,7 +48,8 @@ module.exports = {
           }
         })
         .catch(function (error) {
-         //response.json({message: error.message});
+          response
+            .json({message: error.message});
         });
 
     }
@@ -58,7 +59,8 @@ module.exports = {
     new User({
       username: request.params.username
     })
-      .fetch()
+
+      .fetch({columns:["id","username", "first_name", "last_name", "email","created_at","updated_at"]})
       .then(function (user) {
         if(!user) {
           response
@@ -78,7 +80,7 @@ module.exports = {
 
   readAll: function (request, response) {
     User
-      .fetchAll({required: true})
+      .fetchAll({columns:["id","username", "first_name", "last_name", "email","created_at","updated_at"],required: true})
       .then(function (user) {
         console.log(user);
         response.json(user);
