@@ -12,6 +12,7 @@ bookshelf.knex.schema.hasTable('users').then(function (exists) {
         table.string('email').notNullable().unique();
         table.string('username').notNullable().unique();
         table.string('password').notNullable();
+        table.string('salt').notNullable().unique();
         table.timestamps();
       })
       .then(function () {
