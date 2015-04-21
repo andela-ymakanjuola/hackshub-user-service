@@ -29,7 +29,7 @@ module.exports = {
       pg: {
         client: 'pg',
         connection: {
-          host     : '1ec2-107-22-161-155.compute-1.amazonaws.com',
+          host     : 'ec2-107-22-161-155.compute-1.amazonaws.com',
           user     : 'flknhxxcyuyocl',
           password : 'HElkja9I0cF5DlpsfQ-1Oueh4i',
           database : 'douhefahet104'
