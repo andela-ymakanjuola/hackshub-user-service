@@ -23,4 +23,7 @@ router.route('/users/:username')
 
   .delete(User.delete);
 
+router.route('/authenticate')
+  .get(User.auth);
+
 module.exports = router;
