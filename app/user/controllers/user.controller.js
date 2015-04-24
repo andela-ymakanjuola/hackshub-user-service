@@ -178,5 +178,14 @@ module.exports = {
       .status(500)
       .json({message: error.message});
     })
+  },
+
+  auth: function (request, response, error) {
+    console.log('here');
+    if (error.name === 'UnauthorizedError') {
+      response.json(401, 'invalid token...');
+    }
+    response.json('UserAuthorized');
   }
+    
 }
